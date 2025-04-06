@@ -10,6 +10,7 @@ namespace APITaxi.Controllers
 {
     [EnableCors("CorsRules")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PersonaController : ControllerBase
     {
@@ -23,7 +24,7 @@ namespace APITaxi.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        
         [Route("Lista")]
 
         //[AllowAnonymous]   // ----- Sin autorizacion
@@ -76,7 +77,7 @@ namespace APITaxi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        
         [Route("Obtener/{IdPersona:int}")]
 
         public IActionResult Obtener(int IdPersona)
@@ -131,7 +132,7 @@ namespace APITaxi.Controllers
 
         [HttpPost]
         [Route("Guardar")]
-        [Authorize(Policy = "Empresa")]
+        //[Authorize(Policy = "Empresa")]
         public IActionResult Guardar([FromBody] Persona objeto)
         {
             try
@@ -175,7 +176,7 @@ namespace APITaxi.Controllers
         [HttpPut]
         [Route("Editar")]
         //[Authorize(Policy = "Secretaria")]
-        [Authorize(Policy = "Empresa")]
+        //[Authorize(Policy = "Empresa")]
         public IActionResult Editar([FromBody] Persona objeto)
         {
             try
