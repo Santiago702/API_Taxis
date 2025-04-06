@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.ComponentModel;
 using System.Text;
+using APITaxiV2.Funciones;
 
 
 
@@ -68,8 +69,10 @@ namespace APITaxi.Controllers
                 Console.WriteLine(error);
             }
 
-            //Here-----------------------
+            //Desencriptado-----------------------
 
+            string contrasena = Encriptado.Desencriptar(request.Contrasena);
+            request.Contrasena = contrasena;
 
             if (personas.Any())
             {
