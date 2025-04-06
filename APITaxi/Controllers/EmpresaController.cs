@@ -48,7 +48,7 @@ namespace APITaxi.Controllers
                                 Representante = lector["representante"].ToString(),
                                 RedPrincipal = lector["red_principal"].ToString(),
                                 RedSecundaria = lector["red_secundaria"].ToString(),
-                                IdUsuario = Convert.ToInt32(lector["id_usuario"]),
+                                IdPersonaEmp = Convert.ToInt32(lector["id_persona_emp"]),
                                 Cupos = Convert.ToInt32(lector["cupos"])
 
                             });
@@ -93,7 +93,7 @@ namespace APITaxi.Controllers
                                 Representante = lector["representante"].ToString(),
                                 RedPrincipal = lector["red_principal"].ToString(),
                                 RedSecundaria = lector["red_secundaria"].ToString(),
-                                IdUsuario = Convert.ToInt32(lector["id_usuario"]),
+                                IdPersonaEmp = Convert.ToInt32(lector["id_persona_emp"]),
                                 Cupos = Convert.ToInt32(lector["cupos"])
 
                             });
@@ -128,7 +128,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("representante",objeto.Representante);
                     comando.Parameters.AddWithValue("red_principal",objeto.RedPrincipal);
                     comando.Parameters.AddWithValue("red_secundaria",objeto.RedSecundaria);
-                    comando.Parameters.AddWithValue("id_usuario",objeto.IdUsuario);
+                    comando.Parameters.AddWithValue("id_persona_emp",objeto.IdPersonaEmp);
                     comando.Parameters.AddWithValue("cupos",objeto.Cupos);
                     comando.CommandType = CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
@@ -162,7 +162,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("representante", string.IsNullOrEmpty(objeto.Representante) ? DBNull.Value : objeto.Representante);
                     comando.Parameters.AddWithValue("red_principal", string.IsNullOrEmpty(objeto.RedPrincipal) ? DBNull.Value : objeto.RedPrincipal);
                     comando.Parameters.AddWithValue("red_secundaria", string.IsNullOrEmpty(objeto.RedSecundaria) ? DBNull.Value : objeto.RedSecundaria);
-                    comando.Parameters.AddWithValue("id_usuario", objeto.IdUsuario == 0 ? DBNull.Value : objeto.IdUsuario);
+                    comando.Parameters.AddWithValue("id_persona_emp", objeto.IdPersonaEmp == 0 ? DBNull.Value : objeto.IdPersonaEmp);
                     comando.Parameters.AddWithValue("cupos", objeto.Cupos == 0 ? DBNull.Value : objeto.Cupos);
                     comando.CommandType = CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();

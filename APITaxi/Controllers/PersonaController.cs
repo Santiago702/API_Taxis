@@ -11,12 +11,12 @@ namespace APITaxi.Controllers
     [EnableCors("CorsRules")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ConductorController : ControllerBase
+    public class PersonaController : ControllerBase
     {
         private readonly string cadenaSQL;
 
 
-        public ConductorController(IConfiguration config)
+        public PersonaController(IConfiguration config)
         {
             cadenaSQL = config.GetConnectionString("CadenaSQL");
         }
@@ -29,27 +29,26 @@ namespace APITaxi.Controllers
         //[AllowAnonymous]   // ----- Sin autorizacion
         public IActionResult Lista()
         {
-            List<Conductor> lista = new List<Conductor>();
+            List<Persona> lista = new List<Persona>();
 
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("listar_conductor", conexion);
+                    var comando = new SqlCommand("listar_persona", conexion);
                     comando.CommandType = CommandType.StoredProcedure;
                     using (var lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
                         {
-                            lista.Add(new Conductor()
+                            lista.Add(new Persona()
                             {
-                                IdConductor = Convert.ToInt32(lector["id_conductor"]),
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
                                 Foto = lector["foto"].ToString(),
                                 Nombre = lector["nombre"].ToString(),
                                 NumeroCedula = Convert.ToInt64(lector["numero_cedula"]),
                                 Telefono = Convert.ToInt64(lector["telefono"]),
-                                Celular = Convert.ToInt64(lector["celular"]),
                                 Correo = lector["correo"].ToString(),
                                 Direccion = lector["direccion"].ToString(),
                                 Ciudad = lector["ciudad"].ToString(),
@@ -57,11 +56,13 @@ namespace APITaxi.Controllers
                                 GrupoSanguineo = lector["grupo_sanguineo"].ToString(),
                                 Eps = lector["eps"].ToString(),
                                 Arl = lector["arl"].ToString(),
+                                Contrasena = lector["contrasena"].ToString(),
+                                IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
                                 DocumentoCedula = lector["documento_cedula"].ToString(),
                                 DocumentoEps = lector["documento_eps"].ToString(),
                                 DocumentoArl = lector["documento_arl"].ToString(),
-                                IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
-                                Contrasena = lector["contrasena"].ToString()
+                                IdRol = Convert.ToInt32(lector["id_rol"])
+
                             });
                         }
                     }
@@ -76,32 +77,31 @@ namespace APITaxi.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("Obtener/{IdConductor:int}")]
+        [Route("Obtener/{IdPersona:int}")]
 
-        public IActionResult Obtener(int IdConductor)
+        public IActionResult Obtener(int IdPersona)
         {
-            Conductor conductor = new Conductor();
-            List<Conductor> lista = new List<Conductor>();
+            Persona persona = new Persona();
+            List<Persona> lista = new List<Persona>();
 
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("listar_conductor", conexion);
+                    var comando = new SqlCommand("listar_persona", conexion);
                     comando.CommandType = CommandType.StoredProcedure;
                     using (var lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
                         {
-                            lista.Add(new Conductor()
+                            lista.Add(new Persona()
                             {
-                                IdConductor = Convert.ToInt32(lector["id_conductor"]),
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
                                 Foto = lector["foto"].ToString(),
                                 Nombre = lector["nombre"].ToString(),
                                 NumeroCedula = Convert.ToInt64(lector["numero_cedula"]),
                                 Telefono = Convert.ToInt64(lector["telefono"]),
-                                Celular = Convert.ToInt64(lector["celular"]),
                                 Correo = lector["correo"].ToString(),
                                 Direccion = lector["direccion"].ToString(),
                                 Ciudad = lector["ciudad"].ToString(),
@@ -109,36 +109,37 @@ namespace APITaxi.Controllers
                                 GrupoSanguineo = lector["grupo_sanguineo"].ToString(),
                                 Eps = lector["eps"].ToString(),
                                 Arl = lector["arl"].ToString(),
+                                Contrasena = lector["contrasena"].ToString(),
+                                IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
                                 DocumentoCedula = lector["documento_cedula"].ToString(),
                                 DocumentoEps = lector["documento_eps"].ToString(),
                                 DocumentoArl = lector["documento_arl"].ToString(),
-                                IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
-                                Contrasena = lector["contrasena"].ToString()
+                                IdRol = Convert.ToInt32(lector["id_rol"])
                             });
                         }
                     }
                 }
-                conductor = lista.Where(item => item.IdConductor == IdConductor).FirstOrDefault();
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "OK", response = conductor });
+                persona = lista.Where(item => item.IdPersona == IdPersona).FirstOrDefault();
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "OK", response = persona });
             }
             catch (Exception error)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = conductor });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = persona });
             }
         }
 
 
         [HttpPost]
         [Route("Guardar")]
-        [Authorize(Policy = "Empresa")]  
-        public IActionResult Guardar([FromBody] Conductor objeto)
+        [Authorize(Policy = "Empresa")]
+        public IActionResult Guardar([FromBody] Persona objeto)
         {
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("guardar_conductor", conexion);
+                    var comando = new SqlCommand("guardar_persona", conexion);
                     comando.Parameters.AddWithValue("foto", objeto.Foto);
                     comando.Parameters.AddWithValue("nombre", objeto.Nombre);
                     comando.Parameters.AddWithValue("numero_cedula", objeto.NumeroCedula);
@@ -146,16 +147,17 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("correo", objeto.Correo);
                     comando.Parameters.AddWithValue("direccion", objeto.Direccion);
                     comando.Parameters.AddWithValue("ciudad", objeto.Ciudad);
-                    comando.Parameters.AddWithValue("celular", objeto.Celular);
                     comando.Parameters.AddWithValue("estado", objeto.Estado);
                     comando.Parameters.AddWithValue("grupo_sanguineo", objeto.GrupoSanguineo);
                     comando.Parameters.AddWithValue("eps", objeto.Eps);
                     comando.Parameters.AddWithValue("arl", objeto.Arl);
+                    comando.Parameters.AddWithValue("contrasena", objeto.Contrasena);
+                    comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa);
                     comando.Parameters.AddWithValue("documento_cedula", objeto.DocumentoCedula);
                     comando.Parameters.AddWithValue("documento_eps", objeto.DocumentoEps);
                     comando.Parameters.AddWithValue("documento_arl", objeto.DocumentoArl);
-                    comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa);
-                    comando.Parameters.AddWithValue("contrasena", objeto.Contrasena);
+                    comando.Parameters.AddWithValue("id_rol", objeto.IdRol);
+                    
                     comando.CommandType = CommandType.StoredProcedure;
 
                     comando.ExecuteNonQuery();
@@ -174,15 +176,15 @@ namespace APITaxi.Controllers
         [Route("Editar")]
         //[Authorize(Policy = "Secretaria")]
         [Authorize(Policy = "Empresa")]
-        public IActionResult Editar([FromBody] Conductor objeto)
+        public IActionResult Editar([FromBody] Persona objeto)
         {
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("editar_conductor", conexion);
-                    comando.Parameters.AddWithValue("id_conductor", objeto.IdConductor == 0 ? DBNull.Value : objeto.IdConductor);
+                    var comando = new SqlCommand("editar_persona", conexion);
+                    comando.Parameters.AddWithValue("id_persona", objeto.IdPersona == 0 ? DBNull.Value : objeto.IdPersona);
                     comando.Parameters.AddWithValue("foto", string.IsNullOrEmpty(objeto.Foto) ? DBNull.Value : objeto.Foto);
                     comando.Parameters.AddWithValue("nombre", string.IsNullOrEmpty(objeto.Nombre) ? DBNull.Value : objeto.Nombre);
                     comando.Parameters.AddWithValue("numero_cedula", objeto.NumeroCedula == 0 ? DBNull.Value : objeto.NumeroCedula);
@@ -190,16 +192,17 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("correo", string.IsNullOrEmpty(objeto.Correo) ? DBNull.Value : objeto.Correo);
                     comando.Parameters.AddWithValue("direccion", string.IsNullOrEmpty(objeto.Direccion) ? DBNull.Value : objeto.Direccion);
                     comando.Parameters.AddWithValue("ciudad", string.IsNullOrEmpty(objeto.Ciudad) ? DBNull.Value : objeto.Ciudad);
-                    comando.Parameters.AddWithValue("celular", objeto.Celular == 0 ? DBNull.Value : objeto.Celular);
                     comando.Parameters.AddWithValue("estado", objeto.Estado);
                     comando.Parameters.AddWithValue("grupo_sanguineo", string.IsNullOrEmpty(objeto.GrupoSanguineo) ? DBNull.Value : objeto.GrupoSanguineo);
                     comando.Parameters.AddWithValue("eps", string.IsNullOrEmpty(objeto.Eps) ? DBNull.Value : objeto.Eps);
                     comando.Parameters.AddWithValue("arl", string.IsNullOrEmpty(objeto.Arl) ? DBNull.Value : objeto.Arl);
+                    comando.Parameters.AddWithValue("contrasena", string.IsNullOrEmpty(objeto.Contrasena) ? DBNull.Value : objeto.Contrasena);
+                    comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa == 0 ? DBNull.Value : objeto.IdEmpresa);
                     comando.Parameters.AddWithValue("documento_cedula", string.IsNullOrEmpty(objeto.DocumentoCedula) ? DBNull.Value : objeto.DocumentoCedula);
                     comando.Parameters.AddWithValue("documento_eps", string.IsNullOrEmpty(objeto.DocumentoEps) ? DBNull.Value : objeto.DocumentoEps);
                     comando.Parameters.AddWithValue("documento_arl", string.IsNullOrEmpty(objeto.DocumentoArl) ? DBNull.Value : objeto.DocumentoArl);
-                    comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa == 0 ? DBNull.Value : objeto.IdEmpresa);
-                    comando.Parameters.AddWithValue("contrasena", string.IsNullOrEmpty(objeto.Contrasena) ? DBNull.Value : objeto.Contrasena);
+                    comando.Parameters.AddWithValue("id_rol", objeto.IdRol == 0 ? DBNull.Value : objeto.IdEmpresa);
+
                     comando.CommandType = CommandType.StoredProcedure;
 
                     comando.ExecuteNonQuery();
@@ -215,17 +218,17 @@ namespace APITaxi.Controllers
 
 
         [HttpDelete]
-        [Route("Eliminar/{IdConductor:int}")]
+        [Route("Eliminar/{IdPersona:int}")]
         [Authorize(Policy = "Admin")]  // Solo rol Admin puede acceder
-        public IActionResult Eliminar(int IdConductor)
+        public IActionResult Eliminar(int IdPersona)
         {
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("eliminar_conductor", conexion);
-                    comando.Parameters.AddWithValue("id_conductor", IdConductor);
+                    var comando = new SqlCommand("eliminar_persona", conexion);
+                    comando.Parameters.AddWithValue("id_persona", IdPersona);
                     comando.CommandType = CommandType.StoredProcedure;
 
                     comando.ExecuteNonQuery();

@@ -28,26 +28,26 @@ namespace APITaxi.Controllers
 
         [HttpPost]
         [Route("Validar")]
-        public IActionResult Validar([FromBody]Login request)
-        {        
+        public IActionResult Validar([FromBody] Login request)
+        {
             //Here-----------------------
 
-            List<Usuario> usuarios = new List<Usuario>();
+            List<Persona> personas = new List<Persona>();
             try
             {
                 using (var conexion = new SqlConnection(cadenaSQL))
                 {
                     conexion.Open();
-                    var comando = new SqlCommand("listar_usuario", conexion);
+                    var comando = new SqlCommand("listar_persona", conexion);
                     comando.CommandType = CommandType.StoredProcedure;
 
                     using (var lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
                         {
-                            usuarios.Add(new Usuario()
+                            personas.Add(new Persona()
                             {
-                                IdUsuario = Convert.ToInt32(lector["id_usuario"]),
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
                                 Correo = lector["correo"].ToString(),
                                 Contrasena = lector["contrasena"].ToString(),
                                 Foto = lector["foto"].ToString(),
@@ -55,7 +55,6 @@ namespace APITaxi.Controllers
                                 Telefono = Convert.ToInt64(lector["telefono"]),
                                 Direccion = lector["direccion"].ToString(),
                                 Ciudad = lector["ciudad"].ToString(),
-                                Celular = Convert.ToInt64(lector["celular"]),
                                 Estado = Convert.ToBoolean(lector["estado"]),
                                 IdRol = Convert.ToInt32(lector["id_rol"]),
 
@@ -72,9 +71,9 @@ namespace APITaxi.Controllers
             //Here-----------------------
 
 
-            if (usuarios.Any())
+            if (personas.Any())
             {
-                var validado = usuarios.Where(item => item.Correo == request.Correo && item.Contrasena == request.Contrasena).FirstOrDefault();
+                var validado = personas.Where(item => item.Correo == request.Correo && item.Contrasena == request.Contrasena).FirstOrDefault();
 
                 if (validado != null)
                 {
@@ -88,7 +87,7 @@ namespace APITaxi.Controllers
                     {
                         Subject = claims,
                         Expires = DateTime.UtcNow.AddMinutes(45),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes),SecurityAlgorithms.HmacSha256Signature)
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
                     };
 
                     var tokenHandler = new JwtSecurityTokenHandler();
@@ -106,9 +105,9 @@ namespace APITaxi.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { token = "" , mensaje = "No se encontraron Usuarios"});
+                return StatusCode(StatusCodes.Status404NotFound, new { token = "", mensaje = "No se encontraron Personas" });
             }
-            
+
         }
 
     }

@@ -3,7 +3,7 @@
     public class Transaccion
     {
         public int IdTransaccion { get; set; }
-        public int IdUsuario { get; set; }
+        public int IdPersona { get; set; }
         public string Accion { get; set; }
         public string Modelo { get; set; }
 

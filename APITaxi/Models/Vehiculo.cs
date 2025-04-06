@@ -12,7 +12,7 @@
 
         public string TecnicoMecanica { get; set; }
 
-        public int IdPropietario { get; set; }
+        public int IdPersonaProp { get; set; }
 
         public int IdEmpresa { get; set; }
         public DateTime VenceSoat { get; set; }

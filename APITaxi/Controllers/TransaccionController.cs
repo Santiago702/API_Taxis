@@ -42,7 +42,7 @@ namespace APITaxi.Controllers
                             lista.Add(new Transaccion()
                             {
                                 IdTransaccion = Convert.ToInt32(lector["id_transaccion"]),
-                                IdUsuario = Convert.ToInt32(lector["id_usuario"]),
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
                                 Accion = lector["accion"].ToString(),
                                 Modelo = lector["modelo"].ToString(),
                                 Fecha = Convert.ToDateTime(lector["fecha"]),
@@ -83,7 +83,7 @@ namespace APITaxi.Controllers
                             lista.Add(new Transaccion()
                             {
                                 IdTransaccion = Convert.ToInt32(lector["id_transaccion"]),
-                                IdUsuario = Convert.ToInt32(lector["id_usuario"]),
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
                                 Accion = lector["accion"].ToString(),
                                 Modelo = lector["modelo"].ToString(),
                                 Fecha = Convert.ToDateTime(lector["fecha"]),
@@ -114,7 +114,7 @@ namespace APITaxi.Controllers
                 {
                     conexion.Open();
                     var comando = new SqlCommand("guardar_transaccion", conexion);
-                    comando.Parameters.AddWithValue("id_usuario", objeto.IdUsuario);
+                    comando.Parameters.AddWithValue("id_persona", objeto.IdPersona);
                     comando.Parameters.AddWithValue("accion", objeto.Accion);
                     comando.Parameters.AddWithValue("modelo", objeto.Modelo);
                     comando.Parameters.AddWithValue("fecha", objeto.Fecha);
@@ -144,7 +144,7 @@ namespace APITaxi.Controllers
                     conexion.Open();
                     var comando = new SqlCommand("editar_transaccion", conexion);
                     comando.Parameters.AddWithValue("id_transaccion", objeto.IdTransaccion);
-                    comando.Parameters.AddWithValue("id_usuario", objeto.IdUsuario == 0 ? DBNull.Value : objeto.IdUsuario);
+                    comando.Parameters.AddWithValue("id_persona", objeto.IdPersona == 0 ? DBNull.Value : objeto.IdPersona);
                     comando.Parameters.AddWithValue("accion", string.IsNullOrEmpty(objeto.Accion) ? DBNull.Value : objeto.Accion);
                     comando.Parameters.AddWithValue("modelo", string.IsNullOrEmpty(objeto.Modelo) ? DBNull.Value : objeto.Modelo);
                     comando.Parameters.AddWithValue("fecha", objeto.Fecha == DateTime.MinValue ? DBNull.Value : objeto.Fecha);

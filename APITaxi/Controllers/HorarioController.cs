@@ -45,7 +45,7 @@ namespace APITaxi.Controllers
                                 Fecha = Convert.ToDateTime(lector["fecha"]),
                                 HoraInicio = TimeSpan.Parse(lector["hora_inicio"].ToString()),
                                 HoraFin = TimeSpan.Parse(lector["hora_fin"].ToString()),
-                                IdConductor = Convert.ToInt32(lector["id_conductor"]),
+                                IdPersonaCond = Convert.ToInt32(lector["id_persona_cond"]),
                                 IdVehiculo = Convert.ToInt32(lector["id_vehiculo"])
                             });
                         }
@@ -86,7 +86,7 @@ namespace APITaxi.Controllers
                                 Fecha = Convert.ToDateTime(lector["fecha"]),
                                 HoraInicio = TimeSpan.Parse(lector["hora_inicio"].ToString()),
                                 HoraFin = TimeSpan.Parse(lector["hora_fin"].ToString()),
-                                IdConductor = Convert.ToInt32(lector["id_conductor"]),
+                                IdPersonaCond = Convert.ToInt32(lector["id_persona_cond"]),
                                 IdVehiculo = Convert.ToInt32(lector["id_vehiculo"])
                             });
                         }
@@ -117,7 +117,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("fecha", objeto.Fecha);
                     comando.Parameters.AddWithValue("hora_inicio", objeto.HoraInicio);
                     comando.Parameters.AddWithValue("hora_fin", objeto.HoraFin);
-                    comando.Parameters.AddWithValue("id_conductor", objeto.IdConductor);
+                    comando.Parameters.AddWithValue("id_persona_cond", objeto.IdPersonaCond);
                     comando.Parameters.AddWithValue("id_vehiculo", objeto.IdVehiculo);
                     comando.CommandType = CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
@@ -149,7 +149,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("fecha", objeto.Fecha == DateTime.MinValue ? DBNull.Value : objeto.Fecha);
                     comando.Parameters.AddWithValue("hora_inicio", objeto.HoraInicio == TimeSpan.Zero ? DBNull.Value : objeto.HoraInicio);
                     comando.Parameters.AddWithValue("hora_fin", objeto.HoraFin == TimeSpan.Zero ? DBNull.Value : objeto.HoraFin);
-                    comando.Parameters.AddWithValue("id_conductor", objeto.IdConductor == 0 ? DBNull.Value : objeto.IdConductor);
+                    comando.Parameters.AddWithValue("id_persona_cond", objeto.IdPersonaCond == 0 ? DBNull.Value : objeto.IdPersonaCond);
                     comando.Parameters.AddWithValue("id_vehiculo", objeto.IdVehiculo == 0 ? DBNull.Value : objeto.IdVehiculo);
                     comando.CommandType = CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();

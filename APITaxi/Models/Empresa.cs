@@ -14,7 +14,7 @@
 
         public string RedSecundaria { get; set; }
 
-        public int IdUsuario { get; set; }
+        public int IdPersonaEmp { get; set; }
 
         public int Cupos { get; set; }
 

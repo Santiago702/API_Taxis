@@ -48,7 +48,7 @@ namespace APITaxi.Controllers
                                 Estado = Convert.ToBoolean(lector["estado"]),
                                 Soat = lector["soat"].ToString(),
                                 TecnicoMecanica = lector["tecnico_mecanica"].ToString(),
-                                IdPropietario = Convert.ToInt32(lector["id_propietario"]),
+                                IdPersonaProp = Convert.ToInt32(lector["id_persona_prop"]),
                                 IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
                                 VenceSoat = Convert.ToDateTime(lector["vence_soat"]),
                                 VenceTecnicoMecanica = Convert.ToDateTime(lector["vence_tecnico_mecanica"])
@@ -92,7 +92,7 @@ namespace APITaxi.Controllers
                                 Estado = Convert.ToBoolean(lector["estado"]),
                                 Soat = lector["soat"].ToString(),
                                 TecnicoMecanica = lector["tecnico_mecanica"].ToString(),
-                                IdPropietario = Convert.ToInt32(lector["id_propietario"]),
+                                IdPersonaProp = Convert.ToInt32(lector["id_persona_prop"]),
                                 IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
                                 VenceSoat = Convert.ToDateTime(lector["vence_soat"]),
                                 VenceTecnicoMecanica = Convert.ToDateTime(lector["vence_tecnico_mecanica"])
@@ -126,7 +126,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("estado", objeto.Estado);
                     comando.Parameters.AddWithValue("soat", objeto.Soat);
                     comando.Parameters.AddWithValue("tecnico_mecanica", objeto.TecnicoMecanica);
-                    comando.Parameters.AddWithValue("id_propietario", objeto.IdPropietario);
+                    comando.Parameters.AddWithValue("id_persona_prop", objeto.IdPersonaProp);
                     comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa);
                     comando.Parameters.AddWithValue("vence_soat", objeto.VenceSoat);
                     comando.Parameters.AddWithValue("vence_tecnico_mecanica", objeto.VenceTecnicoMecanica);
@@ -161,7 +161,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("estado", objeto.Estado);
                     comando.Parameters.AddWithValue("soat", string.IsNullOrEmpty(objeto.Soat) ? DBNull.Value : objeto.Soat);
                     comando.Parameters.AddWithValue("tecnico_mecanica", string.IsNullOrEmpty(objeto.TecnicoMecanica) ? DBNull.Value : objeto.TecnicoMecanica);
-                    comando.Parameters.AddWithValue("id_propietario", objeto.IdPropietario == 0 ? DBNull.Value : objeto.IdPropietario);
+                    comando.Parameters.AddWithValue("id_persona_prop", objeto.IdPersonaProp == 0 ? DBNull.Value : objeto.IdPersonaProp);
                     comando.Parameters.AddWithValue("id_empresa", objeto.IdEmpresa == 0 ? DBNull.Value : objeto.IdEmpresa);
                     comando.Parameters.AddWithValue("vence_soat", objeto.VenceSoat == DateTime.MinValue ? DBNull.Value : objeto.VenceSoat);
                     comando.Parameters.AddWithValue("vence_tecnico_mecanica", objeto.VenceTecnicoMecanica == DateTime.MinValue ? DBNull.Value : objeto.VenceTecnicoMecanica);
