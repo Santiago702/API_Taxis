@@ -202,7 +202,7 @@ namespace APITaxi.Controllers
                     comando.Parameters.AddWithValue("documento_cedula", string.IsNullOrEmpty(objeto.DocumentoCedula) ? DBNull.Value : objeto.DocumentoCedula);
                     comando.Parameters.AddWithValue("documento_eps", string.IsNullOrEmpty(objeto.DocumentoEps) ? DBNull.Value : objeto.DocumentoEps);
                     comando.Parameters.AddWithValue("documento_arl", string.IsNullOrEmpty(objeto.DocumentoArl) ? DBNull.Value : objeto.DocumentoArl);
-                    comando.Parameters.AddWithValue("id_rol", objeto.IdRol == 0 ? DBNull.Value : objeto.IdEmpresa);
+                    comando.Parameters.AddWithValue("id_rol", objeto.IdRol == 0 ? DBNull.Value : objeto.IdRol);
 
                     comando.CommandType = CommandType.StoredProcedure;
 
