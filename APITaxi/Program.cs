@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-
+using APITaxiV2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -110,6 +110,7 @@ builder.Services.AddSwaggerGen(
         });
     });
 
+builder.Services.AddScoped<IEmail, EmailServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
