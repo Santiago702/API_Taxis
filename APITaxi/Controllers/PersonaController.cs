@@ -10,7 +10,7 @@ namespace APITaxi.Controllers
 {
     [EnableCors("CorsRules")]
     [Route("api/[controller]")]
-    [Authorize]
+    
     [ApiController]
     public class PersonaController : ControllerBase
     {
@@ -22,9 +22,8 @@ namespace APITaxi.Controllers
             cadenaSQL = config.GetConnectionString("CadenaSQL");
         }
 
-
         [HttpGet]
-        
+        [Authorize]
         [Route("Lista")]
 
         //[AllowAnonymous]   // ----- Sin autorizacion
@@ -77,7 +76,7 @@ namespace APITaxi.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize]
         [Route("Obtener/{IdPersona:int}")]
 
         public IActionResult Obtener(int IdPersona)
@@ -131,6 +130,62 @@ namespace APITaxi.Controllers
 
 
         [HttpPost]
+        
+        [Route("ObtenerCorreo")]
+
+        public IActionResult ObtenerCorreo([FromBody]Login login)
+        {
+            Persona persona = new Persona();
+            List<Persona> lista = new List<Persona>();
+
+            try
+            {
+                using (var conexion = new SqlConnection(cadenaSQL))
+                {
+                    conexion.Open();
+                    var comando = new SqlCommand("listar_persona", conexion);
+                    comando.CommandType = CommandType.StoredProcedure;
+                    using (var lector = comando.ExecuteReader())
+                    {
+                        while (lector.Read())
+                        {
+                            lista.Add(new Persona()
+                            {
+                                IdPersona = Convert.ToInt32(lector["id_persona"]),
+                                Foto = lector["foto"].ToString(),
+                                Nombre = lector["nombre"].ToString(),
+                                NumeroCedula = Convert.ToInt64(lector["numero_cedula"]),
+                                Telefono = Convert.ToInt64(lector["telefono"]),
+                                Correo = lector["correo"].ToString(),
+                                Direccion = lector["direccion"].ToString(),
+                                Ciudad = lector["ciudad"].ToString(),
+                                Estado = Convert.ToBoolean(lector["estado"]),
+                                GrupoSanguineo = lector["grupo_sanguineo"].ToString(),
+                                Eps = lector["eps"].ToString(),
+                                Arl = lector["arl"].ToString(),
+                                Contrasena = lector["contrasena"].ToString(),
+                                IdEmpresa = Convert.ToInt32(lector["id_empresa"]),
+                                DocumentoCedula = lector["documento_cedula"].ToString(),
+                                DocumentoEps = lector["documento_eps"].ToString(),
+                                DocumentoArl = lector["documento_arl"].ToString(),
+                                IdRol = Convert.ToInt32(lector["id_rol"])
+                            });
+                        }
+                    }
+                }
+                persona = lista.FirstOrDefault(item => item.Correo == login.Correo);
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "OK", response = persona });
+            }
+            catch (Exception error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = error.Message, response = persona });
+            }
+
+
+        }
+        
+        [HttpPost]
+        [Authorize]
         [Route("Guardar")]
         //[Authorize(Policy = "Empresa")]
         public IActionResult Guardar([FromBody] Persona objeto)
@@ -174,6 +229,7 @@ namespace APITaxi.Controllers
 
 
         [HttpPut]
+        [Authorize]
         [Route("Editar")]
         //[Authorize(Policy = "Secretaria")]
         //[Authorize(Policy = "Empresa")]
