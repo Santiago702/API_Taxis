@@ -73,7 +73,9 @@ namespace APITaxi.Controllers
 
             if (personas.Any())
             {
-                var validado = personas.Where(item => item.Correo == request.Correo && item.Contrasena == request.Contrasena).FirstOrDefault();
+                //var validado = personas.Where(item => item.Correo == request.Correo && item.Contrasena == request.Contrasena).FirstOrDefault();
+                
+                var validado = personas.FirstOrDefault(item => item.Correo == request.Correo && Encriptado.VerifyPassword(request.Contrasena,item.Contrasena).Success);
 
                 if (validado != null)
                 {

@@ -9,6 +9,8 @@ namespace APITaxiV2.Funciones
         private const int WorkFactor = 12;
 
 
+
+
         public static string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password, WorkFactor);
