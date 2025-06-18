@@ -99,12 +99,12 @@ builder.Services.AddSwaggerGen(
         c.SwaggerDoc("v1", new OpenApiInfo
         {
             Title = "API para la Gestión de Taxis",
-            Version = "v1.0",
+            Version = "v2.0",
             Description = "En esta API se encuentran los datos del sistema de información para la gestión y control de Taxis que circulan por Facatativá - Cundinamarca",
             Contact = new OpenApiContact
             {
-                Name = "Aqui va el Autor",
-                Email = "taxisfacatativa.somee.com",
+                Name = "Soporte de Sistema",
+                Email = "soportedesistemafaca@gmail.com",
                 Url = new Uri("https://www.taxisfacatativa.somee.com"),
             },
         });
